@@ -1,182 +1,214 @@
-# Sri Lankan NIC Information Finder 🇱🇰
+# 🇱🇰 Sri Lankan NIC Information Finder
 
-A production-grade Next.js 14+ Single Page Application that extracts Birthday, Gender, and Age from Sri Lankan National Identity Card (NIC) numbers. Built with SEO dominance and AI discoverability as primary goals.
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://nicinfo.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-16.1.3-black?logo=next.js)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-![NIC Finder](./public/og-image.png)
+A free, privacy-first web application to extract **birthday**, **gender**, and **age** from Sri Lankan National Identity Card (NIC) numbers. Works 100% client-side – no data ever leaves your browser.
+
+🌐 **Live Demo**: [https://nicinfo.vercel.app](https://nicinfo.vercel.app)
+
+![NIC Finder Screenshot](public/og-image.png)
+
+---
 
 ## ✨ Features
 
-- **NIC Decoding**: Extract birthday, gender, and age from both old (9-digit) and new (12-digit) NIC formats
-- **Multi-language**: Full support for English, Sinhala (සිංහල), and Tamil (தமிழ்)
-- **Privacy-First**: 100% client-side processing - no data ever leaves your device
-- **Dark Mode**: System-aware theme with manual toggle
-- **Responsive**: Mobile-first design with premium UX
-- **SEO Optimized**: 7 JSON-LD schemas, Open Graph, Twitter Cards, hreflang
-- **AI Discoverable**: llms.txt, ai-plugin.json for chatbot citations
+| Feature | Description |
+|---------|-------------|
+| 🎂 **Birthday Extraction** | Decodes birth date from NIC number |
+| 👤 **Gender Detection** | Identifies male/female from day-of-year encoding |
+| 📅 **Age Calculation** | Precise age in years, months, and days |
+| 🌏 **Multi-Language** | English, සිංහල (Sinhala), தமிழ் (Tamil) |
+| 🔒 **100% Private** | All processing in-browser, no server requests |
+| 📱 **Responsive** | Works on mobile, tablet, and desktop |
+| 🌓 **Dark/Light Mode** | Auto-detects system preference |
+| 📤 **Social Sharing** | Share via WhatsApp, Facebook, Twitter |
+| 📋 **Copy to Clipboard** | One-click copy for results |
+| 📆 **Calendar View** | Interactive calendar popup for birthday |
 
-## 🚀 Quick Start
+---
+
+## 🆔 NIC Format Support
+
+### Old Format (9 digits + letter)
+```
+YYDDDNNNNC
+Example: 941234567V
+```
+- `YY` – Last 2 digits of birth year
+- `DDD` – Day of year (001-366 male, 501-866 female)
+- `NNNN` – Serial number
+- `C` – Check character (V or X)
+
+### New Format (12 digits)
+```
+YYYYDDDNNNNN
+Example: 199412345678
+```
+- `YYYY` – Full 4-digit birth year
+- `DDD` – Day of year (001-366 male, 501-866 female)
+- `NNNNN` – Serial number
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| **Framework** | [Next.js 16](https://nextjs.org) with App Router |
+| **UI Library** | [React 19](https://react.dev) |
+| **Language** | [TypeScript 5](https://www.typescriptlang.org) |
+| **Styling** | [Tailwind CSS 4](https://tailwindcss.com) |
+| **Animations** | [Framer Motion](https://www.framer.com/motion) |
+| **i18n** | [react-intl](https://formatjs.io/docs/react-intl) |
+| **UI Components** | [Radix UI](https://www.radix-ui.com) |
+| **Deployment** | [Vercel](https://vercel.com) |
+
+---
+
+## 📁 Project Structure
+
+```
+nic-information-finder/
+├── src/
+│   ├── app/
+│   │   ├── [locale]/              # Locale-based routing
+│   │   │   ├── components/        # UI Components
+│   │   │   │   ├── NICInput.tsx       # NIC input with validation
+│   │   │   │   ├── ResultsDisplay.tsx # Birthday, gender, age display
+│   │   │   │   ├── CalendarPopover.tsx# Calendar popup
+│   │   │   │   ├── LanguageSwitcher.tsx
+│   │   │   │   ├── ThemeToggle.tsx
+│   │   │   │   ├── FAQSection.tsx
+│   │   │   │   ├── HistorySection.tsx
+│   │   │   │   └── SocialShare.tsx
+│   │   │   ├── layout.tsx         # Root layout with metadata
+│   │   │   ├── page.tsx           # Main page
+│   │   │   └── json-ld.tsx        # Structured data (10 schemas)
+│   │   ├── globals.css            # Global styles
+│   │   └── sitemap.ts             # Dynamic sitemap
+│   ├── lib/
+│   │   ├── nic-utils.ts           # NIC parsing & validation
+│   │   ├── i18n.ts                # Internationalization config
+│   │   └── theme.ts               # Theme utilities
+│   ├── providers/
+│   │   ├── ThemeProvider.tsx      # Dark/light mode context
+│   │   └── IntlProvider.tsx       # i18n context
+│   └── middleware.ts              # Locale detection & routing
+├── messages/
+│   ├── en.json                    # English translations
+│   ├── si.json                    # Sinhala translations
+│   └── ta.json                    # Tamil translations
+├── public/
+│   ├── og-image.png               # Open Graph image
+│   ├── manifest.json              # PWA manifest
+│   ├── robots.txt                 # Search engine directives
+│   └── llms.txt                   # AI crawler info
+└── next.config.ts                 # Next.js configuration
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/pubudutharanga/nic-information-finder.git
+cd nic-information-finder
+
 # Install dependencies
 npm install
 
 # Start development server
 npm run dev
+```
 
-# Build for production
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Build for Production
+
+```bash
 npm run build
-
-# Start production server
 npm start
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the app.
+---
 
-## 📁 Project Structure
+## 🌐 Environment Variables
 
-```
-src/
-├── app/
-│   ├── [locale]/           # Dynamic locale routing
-│   │   ├── components/     # UI components
-│   │   ├── layout.tsx      # Root layout with providers
-│   │   ├── page.tsx        # Main page
-│   │   └── json-ld.tsx     # Structured data schemas
-│   ├── globals.css         # Theme & styles
-│   └── sitemap.ts          # Dynamic sitemap
-├── lib/
-│   ├── i18n.ts            # i18n configuration
-│   ├── nic-utils.ts       # NIC parsing logic
-│   └── theme.ts           # Theme configuration
-├── providers/
-│   ├── IntlProvider.tsx   # FormatJS wrapper
-│   └── ThemeProvider.tsx  # Dark mode context
-└── middleware.ts          # Locale detection/redirect
-messages/
-├── en.json                # English translations
-├── si.json                # Sinhala translations
-└── ta.json                # Tamil translations
-public/
-├── robots.txt             # Crawler rules
-├── llms.txt               # AI assistant info
-├── manifest.json          # PWA manifest
-└── .well-known/
-    └── ai-plugin.json     # ChatGPT plugin manifest
-```
-
-## 🔧 Tech Stack
-
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| Next.js | 16.1.3 | React framework with App Router |
-| React | 19.2.3 | UI library |
-| TypeScript | 5.x | Type safety |
-| Tailwind CSS | 4.x | Styling |
-| Framer Motion | 11.x | Animations |
-| Radix UI | Latest | Accessible primitives |
-| react-intl | 6.x | Internationalization |
-
-## 🌐 SEO Features
-
-### Structured Data (JSON-LD)
-- WebApplication
-- Organization
-- WebSite with SearchAction
-- FAQPage (10+ questions)
-- HowTo
-- BreadcrumbList
-- SoftwareApplication
-
-### Meta Tags
-- Dynamic titles per locale
-- Open Graph suite
-- Twitter Cards
-- hreflang alternates
-
-### AI Discoverability
-- `/llms.txt` - Machine-readable site info
-- `/.well-known/ai-plugin.json` - ChatGPT plugin manifest
-- robots.txt with explicit AI crawler permissions
-
-## 📱 NIC Format Reference
-
-### Old Format (Pre-2016)
-```
-941234567V
-│││      │
-││└──────┴── Serial (4 digits) + Check letter (V/X)
-│└────────── Day of year (1-366 male, 501-866 female)
-└─────────── Birth year (2 digits)
-```
-
-### New Format (Post-2016)
-```
-199412345678
-││││       │
-│││└───────┴── Serial number (5 digits)
-││└──────────── Day of year (1-366 male, 501-866 female)
-└┴───────────── Birth year (4 digits)
-```
-
-## 🔒 Privacy
-
-All NIC processing happens entirely in your browser:
-- ✅ No server requests
-- ✅ No data storage
-- ✅ No cookies for NIC data
-- ✅ No tracking or analytics on NIC data
-
-## 🌍 Localization
-
-| Locale | Language | Status |
-|--------|----------|--------|
-| en | English | ✅ Complete |
-| si | සිංහල (Sinhala) | ✅ Complete |
-| ta | தமிழ் (Tamil) | ✅ Complete |
-
-## 📄 Environment Variables
-
-Create `.env.local`:
+Create a `.env.local` file (optional):
 
 ```env
-# Base URL for canonical URLs and Open Graph
-NEXT_PUBLIC_BASE_URL=https://nic.lk
-
-# Google verification (optional)
-GOOGLE_SITE_VERIFICATION=your-code-here
+# Base URL for SEO (defaults to nicinfo.vercel.app)
+NEXT_PUBLIC_BASE_URL=https://nicinfo.vercel.app
 ```
-
-## 🧪 Testing
-
-```bash
-# Lint
-npm run lint
-
-# Type check
-npx tsc --noEmit
-
-# Build verification
-npm run build
-```
-
-## 📊 Performance Targets
-
-| Metric | Target |
-|--------|--------|
-| Lighthouse Performance | 100 |
-| LCP | < 1.5s |
-| CLS | 0 |
-| INP | < 50ms |
-
-## 📝 License
-
-MIT License - See [LICENSE](./LICENSE) for details.
-
-## 🙏 Acknowledgments
-
-- Sri Lankan Department for Registration of Persons (DRP)
-- The people of Sri Lanka 🇱🇰
 
 ---
 
-Made with ❤️ for Sri Lanka
+## 🔐 Privacy & Security
+
+This tool guarantees complete privacy:
+
+- ✅ **100% Client-Side** – All NIC processing happens in your browser
+- ✅ **No Server Requests** – NIC data never leaves your device
+- ✅ **No Cookies** – No tracking cookies for NIC data
+- ✅ **No Analytics on Input** – Google Analytics tracks page views only
+- ✅ **Security Headers** – XSS protection, CSP, and more
+- ✅ **Open Source** – Fully transparent implementation
+
+---
+
+## 📊 SEO Features
+
+- **10 JSON-LD Schemas**: WebApplication, Organization, FAQPage, HowTo, etc.
+- **Dynamic Sitemap**: Auto-generated for all locales
+- **Meta Tags**: Complete Open Graph and Twitter Card support
+- **robots.txt**: Configured for search engines and AI crawlers
+- **Google Analytics**: Integrated (G-FLEV55JTJJ)
+- **Structured Data**: 10/10 Rich Results score
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Developer
+
+**Pubudu Tharanga**
+
+- 🌐 Website: [pubudu-tharanga.vercel.app](https://pubudu-tharanga.vercel.app)
+- 📧 Contact: [nicinfo.vercel.app](https://nicinfo.vercel.app)
+
+---
+
+## ⚠️ Disclaimer
+
+This tool is for **informational and educational purposes only**. For official documents and services, please contact the Department for Registration of Persons (DRP) of Sri Lanka at [www.drp.gov.lk](https://www.drp.gov.lk).
+
+---
+
+<p align="center">Made with ❤️ in Sri Lanka 🇱🇰</p>
