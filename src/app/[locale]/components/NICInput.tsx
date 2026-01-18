@@ -67,7 +67,7 @@ export default function NICInput({ onValidNIC, onInvalidNIC }: NICInputProps) {
                     onBlur={() => setIsTouched(true)}
                     placeholder={intl.formatMessage({ id: 'input.placeholder' })}
                     aria-describedby={showError ? errorId : undefined}
-                    aria-invalid={showError}
+                    aria-invalid={showError || undefined}
                     autoComplete="off"
                     maxLength={12}
                     className={`input ${inputStateClass} pr-12 font-mono text-lg tracking-wider`}

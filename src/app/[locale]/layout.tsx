@@ -34,9 +34,10 @@ export function generateStaticParams() {
 export async function generateMetadata({
     params,
 }: {
-    params: Promise<{ locale: Locale }>;
+    params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-    const { locale } = await params;
+    const { locale: rawLocale } = await params;
+    const locale = (locales.includes(rawLocale as Locale) ? rawLocale : 'en') as Locale;
     const msg = messages[locale]?.meta || messages.en.meta;
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://nic.lk';
@@ -159,11 +160,11 @@ export default async function LocaleLayout({
     params,
 }: {
     children: React.ReactNode;
-    params: Promise<{ locale: Locale }>;
+    params: Promise<{ locale: string }>;
 }) {
     const { locale: rawLocale } = await params;
     // Validate locale and fallback to 'en' if invalid
-    const locale: Locale = locales.includes(rawLocale as Locale) ? rawLocale : 'en';
+    const locale: Locale = locales.includes(rawLocale as Locale) ? (rawLocale as Locale) : 'en';
     const msg = messages[locale] || messages.en;
     const langCode = localeToHreflang[locale]?.split('-')[0] || 'en';
 
