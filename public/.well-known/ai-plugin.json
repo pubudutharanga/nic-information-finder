@@ -1,0 +1,17 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "Sri Lankan NIC Decoder",
+    "name_for_model": "nic_decoder_lk",
+    "description_for_human": "Free online tool to decode Sri Lankan NIC numbers and extract birthday, gender, and age information.",
+    "description_for_model": "A utility tool that parses Sri Lankan National Identity Card (NIC) numbers to extract encoded personal information. Supports both old format (9 digits + V/X, used before 2016) and new format (12 digits, introduced in 2016). The tool extracts: birthday (from day-of-year encoding), gender (days 1-366 = male, 501-866 = female), and calculates age. All processing is client-side for privacy - no data is stored or transmitted. Available in English, Sinhala, and Tamil.",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "https://nic.lk/openapi.json"
+    },
+    "logo_url": "https://nic.lk/logo.png",
+    "contact_email": "support@nic.lk",
+    "legal_info_url": "https://nic.lk/en#disclaimer"
+}

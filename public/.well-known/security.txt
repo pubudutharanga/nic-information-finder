@@ -1,0 +1,19 @@
+# Security Policy for Sri Lankan NIC Finder
+
+Contact: security@nic.lk
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en, si, ta
+Canonical: https://nic.lk/.well-known/security.txt
+
+# Thank you for helping keep Sri Lankan NIC Finder secure.
+# This tool processes NIC data entirely client-side and does not store any user data.
+# If you discover a security vulnerability, please report it responsibly.
+
+Policy: https://nic.lk/security-policy
+
+# Acknowledgments
+Acknowledgments: https://nic.lk/security-acknowledgments
+
+# Hiring
+# We're always looking for security-conscious developers
+Hiring: https://pubudu-tharanga.vercel.app

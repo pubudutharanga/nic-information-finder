@@ -1,36 +1,182 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sri Lankan NIC Information Finder 🇱🇰
 
-## Getting Started
+A production-grade Next.js 14+ Single Page Application that extracts Birthday, Gender, and Age from Sri Lankan National Identity Card (NIC) numbers. Built with SEO dominance and AI discoverability as primary goals.
 
-First, run the development server:
+![NIC Finder](./public/og-image.png)
+
+## ✨ Features
+
+- **NIC Decoding**: Extract birthday, gender, and age from both old (9-digit) and new (12-digit) NIC formats
+- **Multi-language**: Full support for English, Sinhala (සිංහල), and Tamil (தமிழ்)
+- **Privacy-First**: 100% client-side processing - no data ever leaves your device
+- **Dark Mode**: System-aware theme with manual toggle
+- **Responsive**: Mobile-first design with premium UX
+- **SEO Optimized**: 7 JSON-LD schemas, Open Graph, Twitter Cards, hreflang
+- **AI Discoverable**: llms.txt, ai-plugin.json for chatbot citations
+
+## 🚀 Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── [locale]/           # Dynamic locale routing
+│   │   ├── components/     # UI components
+│   │   ├── layout.tsx      # Root layout with providers
+│   │   ├── page.tsx        # Main page
+│   │   └── json-ld.tsx     # Structured data schemas
+│   ├── globals.css         # Theme & styles
+│   └── sitemap.ts          # Dynamic sitemap
+├── lib/
+│   ├── i18n.ts            # i18n configuration
+│   ├── nic-utils.ts       # NIC parsing logic
+│   └── theme.ts           # Theme configuration
+├── providers/
+│   ├── IntlProvider.tsx   # FormatJS wrapper
+│   └── ThemeProvider.tsx  # Dark mode context
+└── middleware.ts          # Locale detection/redirect
+messages/
+├── en.json                # English translations
+├── si.json                # Sinhala translations
+└── ta.json                # Tamil translations
+public/
+├── robots.txt             # Crawler rules
+├── llms.txt               # AI assistant info
+├── manifest.json          # PWA manifest
+└── .well-known/
+    └── ai-plugin.json     # ChatGPT plugin manifest
+```
 
-## Learn More
+## 🔧 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Next.js | 16.1.3 | React framework with App Router |
+| React | 19.2.3 | UI library |
+| TypeScript | 5.x | Type safety |
+| Tailwind CSS | 4.x | Styling |
+| Framer Motion | 11.x | Animations |
+| Radix UI | Latest | Accessible primitives |
+| react-intl | 6.x | Internationalization |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌐 SEO Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Structured Data (JSON-LD)
+- WebApplication
+- Organization
+- WebSite with SearchAction
+- FAQPage (10+ questions)
+- HowTo
+- BreadcrumbList
+- SoftwareApplication
 
-## Deploy on Vercel
+### Meta Tags
+- Dynamic titles per locale
+- Open Graph suite
+- Twitter Cards
+- hreflang alternates
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### AI Discoverability
+- `/llms.txt` - Machine-readable site info
+- `/.well-known/ai-plugin.json` - ChatGPT plugin manifest
+- robots.txt with explicit AI crawler permissions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📱 NIC Format Reference
+
+### Old Format (Pre-2016)
+```
+941234567V
+│││      │
+││└──────┴── Serial (4 digits) + Check letter (V/X)
+│└────────── Day of year (1-366 male, 501-866 female)
+└─────────── Birth year (2 digits)
+```
+
+### New Format (Post-2016)
+```
+199412345678
+││││       │
+│││└───────┴── Serial number (5 digits)
+││└──────────── Day of year (1-366 male, 501-866 female)
+└┴───────────── Birth year (4 digits)
+```
+
+## 🔒 Privacy
+
+All NIC processing happens entirely in your browser:
+- ✅ No server requests
+- ✅ No data storage
+- ✅ No cookies for NIC data
+- ✅ No tracking or analytics on NIC data
+
+## 🌍 Localization
+
+| Locale | Language | Status |
+|--------|----------|--------|
+| en | English | ✅ Complete |
+| si | සිංහල (Sinhala) | ✅ Complete |
+| ta | தமிழ் (Tamil) | ✅ Complete |
+
+## 📄 Environment Variables
+
+Create `.env.local`:
+
+```env
+# Base URL for canonical URLs and Open Graph
+NEXT_PUBLIC_BASE_URL=https://nic.lk
+
+# Google verification (optional)
+GOOGLE_SITE_VERIFICATION=your-code-here
+```
+
+## 🧪 Testing
+
+```bash
+# Lint
+npm run lint
+
+# Type check
+npx tsc --noEmit
+
+# Build verification
+npm run build
+```
+
+## 📊 Performance Targets
+
+| Metric | Target |
+|--------|--------|
+| Lighthouse Performance | 100 |
+| LCP | < 1.5s |
+| CLS | 0 |
+| INP | < 50ms |
+
+## 📝 License
+
+MIT License - See [LICENSE](./LICENSE) for details.
+
+## 🙏 Acknowledgments
+
+- Sri Lankan Department for Registration of Persons (DRP)
+- The people of Sri Lanka 🇱🇰
+
+---
+
+Made with ❤️ for Sri Lanka

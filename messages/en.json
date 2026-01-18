@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "title": "Sri Lankan NIC Information Finder | Birthday, Gender & Age Decoder",
+    "description": "Free online tool to extract birthday, gender, and age from Sri Lankan NIC numbers. Supports old 9-digit and new 12-digit formats. 100% private, client-side processing.",
+    "keywords": "Sri Lanka NIC, NIC decoder, birthday from NIC, National Identity Card, ජාතික හැඳුනුම්පත්, தேசிய அடையாள அட்டை"
+  },
+  "header": {
+    "title": "Sri Lankan NIC Information Finder",
+    "subtitle": "Extract Birthday, Gender & Age Instantly",
+    "tagline": "100% Private • Client-Side Processing • No Data Stored"
+  },
+  "input": {
+    "label": "Enter Your NIC Number",
+    "placeholder": "e.g., 941234567V or 199412345678",
+    "helpText": "Supports both old (9-digit) and new (12-digit) NIC formats",
+    "submit": "Decode NIC"
+  },
+  "validation": {
+    "required": "Please enter your NIC number",
+    "invalidFormat": "Invalid NIC format. Please enter a valid 9 or 12 digit NIC",
+    "invalidOldFormat": "Invalid old NIC format. Should be 9 digits followed by V or X",
+    "invalidNewFormat": "Invalid new NIC format. Should be exactly 12 digits",
+    "invalidDayOfYear": "Invalid day of year in NIC number",
+    "valid": "Valid NIC format"
+  },
+  "result": {
+    "title": "Your NIC Information",
+    "birthday": "Birthday",
+    "gender": "Gender",
+    "age": "Age",
+    "viewCalendar": "View in Calendar"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female"
+  },
+  "age": {
+    "years": "years",
+    "months": "months",
+    "days": "days",
+    "year": "year",
+    "month": "month",
+    "day": "day"
+  },
+  "calendar": {
+    "title": "Birth Date Calendar",
+    "monthNames": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "dayNames": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "today": "Today",
+    "birthDate": "Your Birth Date"
+  },
+  "education": {
+    "title": "Understanding Sri Lankan NIC Numbers",
+    "subtitle": "Learn how the National Identity Card number encodes your personal information",
+    "oldFormat": {
+      "title": "Old NIC Format (9 digits)",
+      "description": "The traditional format used before 2016",
+      "structure": "YYDDDNNNNC",
+      "parts": {
+        "year": "YY - Birth Year (2 digits)",
+        "day": "DDD - Day of Year (001-366 for males, 501-866 for females)",
+        "serial": "NNNN - Serial Number",
+        "check": "C - Check letter (V or X)"
+      },
+      "example": "Example: 941234567V"
+    },
+    "newFormat": {
+      "title": "New NIC Format (12 digits)",
+      "description": "The modern format introduced in 2016",
+      "structure": "YYYYDDDNNNNN",
+      "parts": {
+        "year": "YYYY - Full Birth Year (4 digits)",
+        "day": "DDD - Day of Year (001-366 for males, 501-866 for females)",
+        "serial": "NNNNN - Serial Number (5 digits)"
+      },
+      "example": "Example: 199412345678"
+    },
+    "genderNote": "Note: For females, 500 is added to the day of year"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "questions": [
+      {
+        "question": "How to find birthday from NIC number Sri Lanka?",
+        "answer": "Enter your 9 or 12 digit NIC number in the decoder above. The tool extracts the encoded birth date: the first 2 digits (old format) or 4 digits (new format) represent your birth year, and the next 3 digits represent the day of the year you were born."
+      },
+      {
+        "question": "What is the difference between old and new NIC format?",
+        "answer": "The old NIC format has 9 digits plus a letter (V or X), while the new format has 12 digits only. The new format uses a 4-digit year instead of 2-digit, providing better year identification. Both formats encode birthday and gender information the same way."
+      },
+      {
+        "question": "How to decode Sri Lankan NIC number?",
+        "answer": "Our free online tool automatically decodes any Sri Lankan NIC number. Simply enter your NIC above to instantly see your birthday, gender, and calculated age. The decoding happens entirely in your browser for complete privacy."
+      },
+      {
+        "question": "Is NIC information extraction safe and private?",
+        "answer": "Yes, 100% safe and private. Our tool processes your NIC number entirely in your browser (client-side). No data is sent to any server, stored, or logged. Your NIC information never leaves your device."
+      },
+      {
+        "question": "Can I decode a NIC number from any year?",
+        "answer": "Yes, our tool supports NIC numbers from any year. Old format NICs work for birth years 1900-2099, while new format NICs support the full 4-digit year range."
+      },
+      {
+        "question": "How does the NIC number determine gender?",
+        "answer": "The day of year digits (positions 3-5 in old format, 5-7 in new format) determine gender. Values 001-366 indicate male, while values 501-866 indicate female (500 is added to the actual day of year for females)."
+      },
+      {
+        "question": "What if I entered my NIC but it shows invalid?",
+        "answer": "Check that you've entered all digits correctly. Old format should be exactly 9 digits followed by V or X. New format should be exactly 12 digits. Make sure there are no spaces or special characters."
+      },
+      {
+        "question": "Is this an official government tool?",
+        "answer": "No, this is an independent educational tool. For official NIC services, please visit the Department for Registration of Persons (DRP) of Sri Lanka."
+      },
+      {
+        "question": "Can I use this tool on mobile devices?",
+        "answer": "Yes! Our tool is fully responsive and works perfectly on smartphones, tablets, and desktop computers. The interface adapts to any screen size."
+      },
+      {
+        "question": "Why do some NICs have V and others have X?",
+        "answer": "In the old NIC format, V is the standard check letter. X is used when the serial number sequence for that day exceeds certain limits. Both are equally valid."
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Your Privacy is Our Priority",
+    "description": "100% Client-Side Processing - No Data Ever Leaves Your Device",
+    "points": [
+      "All calculations happen in your browser",
+      "No NIC data is sent to any server",
+      "No cookies or tracking for NIC data",
+      "No data storage or logging",
+      "Open source and transparent"
+    ]
+  },
+  "disclaimer": {
+    "title": "Disclaimer",
+    "text": "This tool is provided for informational and educational purposes only. While we strive for accuracy, the extracted information should not be used for official or legal purposes. For official documents, please contact the Department for Registration of Persons (DRP) of Sri Lanka."
+  },
+  "share": {
+    "title": "Share This Tool",
+    "whatsapp": "Share on WhatsApp",
+    "facebook": "Share on Facebook",
+    "twitter": "Share on X (Twitter)",
+    "copy": "Copy Link",
+    "copied": "Link Copied!"
+  },
+  "history": {
+    "title": "History of Sri Lankan National Identity Card",
+    "intro": "The National Identity Card (NIC) is the primary form of identification in Sri Lanka. It is issued by the Department for Registration of Persons (DRP). The history of the NIC dates back to 1972, marking a significant milestone in documenting the island nation's citizens.",
+    "evolution": {
+      "title": "Evolution from 1972 to Smart NIC",
+      "text": "The initial system used a 9-digit numbering format. The first two digits represented the birth year, followed by day-of-year digits. In 2016, to meet international standards and accommodate the growing population, a new 12-digit format was introduced. This modern 'Smart NIC' includes biometric data and a machine-readable barcode."
+    },
+    "importance": {
+      "title": "Why is the NIC Important?",
+      "text": "The NIC is mandatory for all citizens over the age of 16. It is essential for:",
+      "list": [
+        "Voting in elections",
+        "Obtaining a Passport or Driving License",
+        "Opening bank accounts",
+        "Sitting for national examinations"
+      ]
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 Sri Lankan NIC details Finder. All rights reserved.",
+    "developedBy": "Developed by Pubudu Tharanga",
+    "links": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use",
+      "contact": "Contact Us"
+    }
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "system": "System"
+  },
+  "language": {
+    "en": "English",
+    "si": "සිංහල",
+    "ta": "தமிழ்",
+    "select": "Select Language"
+  },
+  "clock": {
+    "label": "Current Date & Time"
+  },
+  "ad": {
+    "label": "Advertisement"
+  },
+  "skipToContent": "Skip to main content",
+  "loading": "Loading...",
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "retry": "Try Again"
+  }
+}

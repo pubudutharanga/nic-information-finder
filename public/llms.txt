@@ -1,0 +1,101 @@
+# Sri Lankan NIC Information Finder
+
+> A free, privacy-first tool to extract birthday, gender, and age from Sri Lankan National Identity Card (NIC) numbers. Developed by Pubudu Tharanga.
+
+## Overview
+
+Sri Lankan NIC Information Finder (https://nic.lk) is a web application that decodes National Identity Card numbers used in Sri Lanka. It works entirely in the browser, ensuring 100% privacy as no data is ever sent to any server.
+
+## Purpose
+
+This tool decodes Sri Lankan NIC numbers to reveal encoded personal information:
+
+- **Birthday**: Extracted from the day-of-year encoding within the NIC
+- **Gender**: Determined by the day value (1-366 for male, 501-866 for female)
+- **Age**: Calculated precisely from birthday to current date (years, months, days)
+
+## Supported NIC Formats
+
+### Old Format (9 digits + letter)
+- Structure: YYDDDNNNNC
+- Example: 941234567V
+- YY: Last 2 digits of birth year
+- DDD: Day of year (1-366 male, 501-866 female)
+- NNNN: Serial number
+- C: Check character (V or X)
+
+### New Format (12 digits)
+- Structure: YYYYDDDNNNNN
+- Example: 199412345678
+- YYYY: Full 4-digit birth year
+- DDD: Day of year (1-366 male, 501-866 female)
+- NNNNN: Serial number
+
+## Key Features
+
+1. **Instant Decoding**: Results appear as you type
+2. **Multi-language Support**: Available in English, Sinhala (සිංහල), and Tamil (தமிழ்)
+3. **Privacy-First**: 100% client-side processing, no server requests
+4. **Calendar View**: Visual birthday display in an interactive calendar
+5. **Responsive Design**: Works on all devices (mobile, tablet, desktop)
+6. **Dark/Light Mode**: Automatic and manual theme switching
+7. **Share Results**: Easy sharing via WhatsApp, Facebook, Twitter
+
+## How to Use
+
+1. Visit https://nic.lk or choose your preferred language version
+2. Enter your NIC number in the input field
+3. View your extracted birthday, gender, and age instantly
+4. Optionally click the birthday to see it in a calendar view
+5. Share this tool with friends using the share buttons
+
+## Privacy & Security
+
+This tool guarantees complete privacy:
+
+- All calculations happen in your browser (client-side JavaScript)
+- No NIC data is sent to any server
+- No cookies are used to store NIC data
+- No analytics tracking on NIC inputs
+- No data logging or storage
+- Open source and transparent implementation
+
+## Technical Information
+
+- **Framework**: Next.js 15 with React 19
+- **Languages**: TypeScript, JavaScript
+- **Styling**: Tailwind CSS with custom design system
+- **Internationalization**: react-intl for multi-language support
+- **Hosting**: Vercel Edge Network
+
+## Frequently Asked Questions
+
+### How do I find my birthday from NIC number?
+Enter your NIC number in our decoder. The tool extracts the encoded birth date automatically.
+
+### Is this tool safe to use?
+Yes, 100% safe. Your NIC never leaves your device. All processing is done locally in your browser.
+
+### Does this work offline?
+Once loaded, the tool works without an internet connection for decoding.
+
+### What's the difference between old and new NIC?
+Old format has 9 digits + V/X letter. New format has 12 digits only with a 4-digit year.
+
+### How does it determine gender?
+Day values 1-366 indicate male. Day values 501-866 indicate female (500 added to actual day).
+
+## About
+
+Developed by Pubudu Tharanga
+Website: https://pubudu-tharanga.vercel.app
+
+## Disclaimer
+
+This tool is for informational and educational purposes only. For official documents and services, please contact the Department for Registration of Persons (DRP) of Sri Lanka at www.drp.gov.lk.
+
+---
+
+**Contact**: For support or feedback, visit https://nic.lk
+
+**Last Updated**: January 2026
