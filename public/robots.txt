@@ -5,7 +5,7 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://nic.lk/sitemap.xml
+Sitemap: https://nicinfo.vercel.app/sitemap.xml
 
 # Block common bot traps and unnecessary paths
 Disallow: /api/
@@ -119,4 +119,4 @@ Allow: /
 # ===========================================
 # Host directive
 # ===========================================
-Host: https://nic.lk
+Host: https://nicinfo.vercel.app

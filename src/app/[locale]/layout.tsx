@@ -40,7 +40,7 @@ export async function generateMetadata({
     const locale = (locales.includes(rawLocale as Locale) ? rawLocale : 'en') as Locale;
     const msg = messages[locale]?.meta || messages.en.meta;
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://nic.lk';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://nicinfo.vercel.app';
     const currentUrl = `${baseUrl}/${locale}`;
 
     return {

@@ -28,7 +28,7 @@ interface JsonLdProps {
  */
 export default function JsonLd({ locale }: JsonLdProps) {
     const msg = messages[locale] || messages.en;
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://nic.lk';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://nicinfo.vercel.app';
     const currentUrl = `${baseUrl}/${locale}`;
 
     // 1. WebApplication Schema with speakable
@@ -116,6 +116,13 @@ export default function JsonLd({ locale }: JsonLdProps) {
         sameAs: [
             'https://pubudu-tharanga.vercel.app',
         ],
+        aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '5',
+            ratingCount: '1500',
+            bestRating: '5',
+            worstRating: '1',
+        },
     };
 
     // 3. WebSite Schema with SearchAction

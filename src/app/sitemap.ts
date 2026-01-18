@@ -11,7 +11,7 @@ import { locales } from '@/lib/i18n';
  * - Sets priority for crawler importance
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://nic.lk';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://nicinfo.vercel.app';
 
     // Generate entries for each locale
     const localeEntries = locales.map((locale) => ({
