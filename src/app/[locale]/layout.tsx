@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
-import Script from 'next/script';
 import '../globals.css';
 import { locales, localeToHreflang, localeToOG, type Locale } from '@/lib/i18n';
 import { ThemeProvider } from '@/providers/ThemeProvider';
@@ -181,19 +180,18 @@ export default async function LocaleLayout({
                 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
                 <link rel="manifest" href="/manifest.json" />
 
-                {/* Google Analytics */}
-                <Script
-                    src="https://www.googletagmanager.com/gtag/js?id=G-FLEV55JTJJ"
-                    strategy="afterInteractive"
+                {/* Google Analytics - inline for Search Console verification */}
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLEV55JTJJ"></script>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', 'G-FLEV55JTJJ');
+                        `,
+                    }}
                 />
-                <Script id="google-analytics" strategy="afterInteractive">
-                    {`
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
-                        gtag('config', 'G-FLEV55JTJJ');
-                    `}
-                </Script>
             </head>
             <body className={`${inter.variable} antialiased`}>
                 <ThemeProvider>
