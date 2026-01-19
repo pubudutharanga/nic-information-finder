@@ -110,13 +110,10 @@ flowchart TD
     D --> F[Extract YY]
     E --> G[Extract YYYY]
     
-    F --> H{YY >= 50?}
-    H -->|Yes| I[Year = 1900 + YY]
-    H -->|No| J[Year = 2000 + YY]
+    F --> I[Year = 1900 + YY]
     G --> K[Year = YYYY]
     
     I --> L[Extract DDD]
-    J --> L
     K --> L
     
     L --> M{DDD > 500?}
@@ -126,9 +123,15 @@ flowchart TD
     N --> P[Convert Day to Date]
     O --> P
     
-    P --> Q[Calculate Age]
-    Q --> R[Display Results]
+    P --> Q{Leap Year?}
+    Q -->|No & Day >= 60| R[Adjust for Day-60 Skip]
+    Q -->|Yes| S[Direct Conversion]
+    R --> T[Calculate Age]
+    S --> T
+    T --> U[Display Results]
 ```
+
+> **Note:** Old format NICs (YYDDDNNNNC) always assume 1900s birth year (e.g., 94 → 1994). New format with full 4-digit year was introduced for people born from 2000 onwards.
 
 ### Gender Detection Logic
 
@@ -152,22 +155,45 @@ flowchart TD
 
 ### Day of Year to Date Conversion
 
-| Day Range | Month | Example |
-|-----------|-------|---------|
-| 001 - 031 | January | Day 15 → Jan 15 |
-| 032 - 059 | February | Day 45 → Feb 14 |
-| 060 - 090 | March | Day 75 → Mar 16 |
-| 091 - 120 | April | Day 100 → Apr 10 |
-| 121 - 151 | May | Day 123 → May 3 |
-| 152 - 181 | June | Day 160 → Jun 9 |
-| 182 - 212 | July | Day 200 → Jul 19 |
-| 213 - 243 | August | Day 225 → Aug 13 |
-| 244 - 273 | September | Day 260 → Sep 17 |
-| 274 - 304 | October | Day 280 → Oct 7 |
-| 305 - 334 | November | Day 320 → Nov 16 |
-| 335 - 366 | December | Day 350 → Dec 16 |
+#### Leap Year (366 days)
 
-> **Note:** Leap years have 366 days, adding an extra day in February.
+| Day Range | Month | Days |
+|-----------|-------|------|
+| 001 - 031 | January | 31 |
+| 032 - 060 | February | 29 |
+| 061 - 091 | March | 31 |
+| 092 - 121 | April | 30 |
+| 122 - 152 | May | 31 |
+| 153 - 182 | June | 30 |
+| 183 - 213 | July | 31 |
+| 214 - 244 | August | 31 |
+| 245 - 274 | September | 30 |
+| 275 - 305 | October | 31 |
+| 306 - 335 | November | 30 |
+| 336 - 366 | December | 31 |
+
+#### Non-Leap Year (365 days) - ⚠️ Day 60 is Skipped!
+
+| Day Range | Month | Days | Note |
+|-----------|-------|------|------|
+| 001 - 031 | January | 31 | |
+| 032 - 059 | February | 28 | |
+| **060** | **SKIPPED** | - | **Day 60 does not exist in NIC** |
+| 061 - 091 | March | 31 | Same as leap year! |
+| 092 - 121 | April | 30 | Same as leap year! |
+| 122 - 152 | May | 31 | Same as leap year! |
+| 153 - 182 | June | 30 | Same as leap year! |
+| 183 - 213 | July | 31 | Same as leap year! |
+| 214 - 244 | August | 31 | Same as leap year! |
+| 245 - 274 | September | 30 | Same as leap year! |
+| 275 - 305 | October | 31 | Same as leap year! |
+| 306 - 335 | November | 30 | Same as leap year! |
+| 336 - 365 | December | 31 | |
+
+> **🔑 Key Insight:** The Sri Lankan NIC system skips day 60 in non-leap years. This brilliant design keeps day numbers consistent from March onwards, regardless of leap year status!
+>
+> - **Leap Year:** Day 60 = Feb 29, Day 61 = Mar 1
+> - **Non-Leap Year:** Day 59 = Feb 28, Day 60 = ❌ skipped, Day 61 = Mar 1
 
 ### Complete Example
 

@@ -24,8 +24,17 @@
  * - Day of year 001-366: Male
  * - Day of year 501-866: Female (500 is added to actual day)
  * 
+ * Special Rule for Non-Leap Years:
+ * - Day 60 is skipped to maintain consistency with leap years
+ * - Feb 28 = Day 59, Mar 1 = Day 61 (day 60 is skipped)
+ * - This keeps day numbers consistent from March onwards
+ * 
  * All calculations are performed client-side for privacy.
  */
+
+// ============================================================================
+// Type Definitions
+// ============================================================================
 
 export type NICFormat = 'old' | 'new';
 export type Gender = 'male' | 'female';
@@ -51,9 +60,41 @@ export interface AgeInfo {
     days: number;
 }
 
-// Regular expressions for NIC validation
+// ============================================================================
+// Constants
+// ============================================================================
+
+/** Regular expression for old NIC format (9 digits + V/X) */
 const OLD_NIC_REGEX = /^[0-9]{9}[VvXx]$/;
+
+/** Regular expression for new NIC format (12 digits) */
 const NEW_NIC_REGEX = /^[0-9]{12}$/;
+
+/** Gender offset added to day of year for females */
+const FEMALE_DAY_OFFSET = 500;
+
+/** 
+ * Cumulative days at end of each month for LEAP years (1-indexed)
+ * Index 0 = 0 (before January), Index 1 = 31 (end of Jan), etc.
+ */
+const CUMULATIVE_DAYS_LEAP = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366];
+
+/** 
+ * Cumulative days at end of each month for NON-LEAP years (1-indexed)
+ * Note: Uses same values as leap year from March onwards (day 60 is skipped)
+ * This matches the Sri Lankan NIC system's day numbering convention
+ */
+const CUMULATIVE_DAYS_NON_LEAP = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365];
+
+/** Days in each month (1-indexed, index 0 unused) */
+const DAYS_IN_MONTH = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+/** Days in each month for leap year (1-indexed, index 0 unused) */
+const DAYS_IN_MONTH_LEAP = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+// ============================================================================
+// Validation Functions
+// ============================================================================
 
 /**
  * Validates a Sri Lankan NIC number
@@ -77,8 +118,6 @@ export function validateNIC(nic: string): NICValidationResult {
     if (OLD_NIC_REGEX.test(trimmedNIC)) {
         const dayOfYear = parseInt(trimmedNIC.substring(2, 5), 10);
 
-        // Validate day of year range
-        // Males: 1-366, Females: 501-866
         if (!isValidDayOfYear(dayOfYear)) {
             return { isValid: false, errorKey: 'validation.invalidDayOfYear' };
         }
@@ -97,7 +136,7 @@ export function validateNIC(nic: string): NICValidationResult {
         return { isValid: true, format: 'new' };
     }
 
-    // Determine specific error
+    // Determine specific error for better user feedback
     if (trimmedNIC.length === 10 && /[VvXx]$/.test(trimmedNIC)) {
         return { isValid: false, errorKey: 'validation.invalidOldFormat' };
     }
@@ -111,112 +150,197 @@ export function validateNIC(nic: string): NICValidationResult {
 
 /**
  * Validates if a day of year value is valid for NIC
- * Males: 1-366, Females: 501-866
+ * 
+ * @param dayOfYear - The day of year value from NIC
+ * @param year - Optional birth year for stricter leap year validation
+ * @returns True if the day of year is valid
+ * 
+ * Valid ranges:
+ * - Males (leap year): 1-366
+ * - Males (non-leap year): 1-365
+ * - Females (leap year): 501-866
+ * - Females (non-leap year): 501-865
  */
-function isValidDayOfYear(dayOfYear: number): boolean {
-    return (dayOfYear >= 1 && dayOfYear <= 366) ||
-        (dayOfYear >= 501 && dayOfYear <= 866);
+function isValidDayOfYear(dayOfYear: number, year?: number): boolean {
+    // Extract base day (remove female offset if present)
+    const baseDay = dayOfYear > FEMALE_DAY_OFFSET ? dayOfYear - FEMALE_DAY_OFFSET : dayOfYear;
+
+    // Must be at least 1
+    if (baseDay < 1) return false;
+
+    // If year not provided, use permissive validation (leap year max)
+    const maxDay = year !== undefined && !isLeapYear(year) ? 365 : 366;
+
+    return baseDay <= maxDay;
 }
+
+// ============================================================================
+// Date Calculation Functions
+// ============================================================================
 
 /**
  * Checks if a year is a leap year
+ * 
+ * @param year - The year to check
+ * @returns True if the year is a leap year
  */
 function isLeapYear(year: number): boolean {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
 }
 
 /**
- * Days in each month (non-leap year)
- */
-const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-/**
- * Finds the month and day from day of year
+ * Converts NIC day of year to actual date (month and day)
  * 
- * @param dayOfYear - Day of year (1-366)
- * @param year - Full birth year
- * @returns Object with month (1-12) and day (1-31)
+ * Handles the Sri Lankan NIC special rule for non-leap years:
+ * - Day 60 is skipped in non-leap years
+ * - This keeps day numbers consistent from March onwards
+ * 
+ * @param nicDayOfYear - Raw day of year from NIC (may include female offset)
+ * @param year - Birth year
+ * @returns Object with month (1-12) and day (1-31), or null if invalid
  */
-function getMonthAndDay(dayOfYear: number, year: number): { month: number; day: number } {
-    const daysInMonth = [...DAYS_IN_MONTH];
+function nicDayToDate(nicDayOfYear: number, year: number): { month: number; day: number } | null {
+    // Remove female offset if present
+    let dayOfYear = nicDayOfYear > FEMALE_DAY_OFFSET
+        ? nicDayOfYear - FEMALE_DAY_OFFSET
+        : nicDayOfYear;
 
-    // Adjust February for leap years
-    if (isLeapYear(year)) {
-        daysInMonth[1] = 29;
+    const leap = isLeapYear(year);
+    const maxDay = leap ? 366 : 365;
+
+    // Validate day range
+    if (dayOfYear < 1 || dayOfYear > maxDay) {
+        return null;
     }
 
-    let remainingDays = dayOfYear;
-    let month = 0;
+    // For non-leap years, adjust for the skipped day 60
+    // NIC day 61+ in non-leap year corresponds to actual day 60+
+    if (!leap && dayOfYear >= 60) {
+        dayOfYear -= 1;
+    }
 
-    while (remainingDays > daysInMonth[month]) {
-        remainingDays -= daysInMonth[month];
+    // Use cumulative days array to find the month
+    const cumDays = leap ? CUMULATIVE_DAYS_LEAP : CUMULATIVE_DAYS_NON_LEAP;
+
+    // Find the month (1-12)
+    let month = 1;
+    while (month <= 12 && dayOfYear > cumDays[month]) {
         month++;
     }
 
-    return {
-        month: month + 1, // Convert to 1-indexed
-        day: remainingDays,
-    };
+    // Calculate day of month
+    const day = dayOfYear - cumDays[month - 1];
+
+    return { month, day };
+}
+
+/**
+ * Determines gender from NIC day of year
+ * 
+ * @param nicDayOfYear - Raw day of year from NIC
+ * @param year - Birth year (for leap year validation)
+ * @returns Gender ('male' or 'female'), or null if invalid
+ */
+function getGenderFromDay(nicDayOfYear: number, year: number): Gender | null {
+    const leap = isLeapYear(year);
+    const maxMaleDay = leap ? 366 : 365;
+    const maxFemaleDay = FEMALE_DAY_OFFSET + maxMaleDay;
+
+    if (nicDayOfYear >= 1 && nicDayOfYear <= maxMaleDay) {
+        return 'male';
+    }
+
+    if (nicDayOfYear >= FEMALE_DAY_OFFSET + 1 && nicDayOfYear <= maxFemaleDay) {
+        return 'female';
+    }
+
+    return null;
 }
 
 /**
  * Extracts the birth year from NIC
  * 
- * Old format: Uses 2-digit year, assumes 1900s for >= 50, 2000s for < 50
- * New format: Uses full 4-digit year
+ * @param nic - The NIC string
+ * @param format - The NIC format ('old' or 'new')
+ * @returns The full 4-digit birth year
+ * 
+ * Old format: Uses 2-digit year, always assumes 1900s (e.g., 94 → 1994)
+ * New format: Uses full 4-digit year directly
  */
 function extractBirthYear(nic: string, format: NICFormat): number {
     if (format === 'old') {
         const yearPart = parseInt(nic.substring(0, 2), 10);
-        // If year >= 50, assume 1900s (e.g., 94 -> 1994)
-        // If year < 50, assume 2000s (e.g., 24 -> 2024)
-        return yearPart >= 50 ? 1900 + yearPart : 2000 + yearPart;
+        return 1900 + yearPart;
     }
-
-    // New format has full 4-digit year
     return parseInt(nic.substring(0, 4), 10);
 }
 
 /**
- * Extracts day of year from NIC
- * Adjusts for female NIC (subtracts 500)
+ * Extracts the raw day of year from NIC (includes female offset if applicable)
+ * 
+ * @param nic - The NIC string
+ * @param format - The NIC format ('old' or 'new')
+ * @returns The raw day of year value
  */
-function extractDayOfYear(nic: string, format: NICFormat): { dayOfYear: number; gender: Gender } {
+function extractRawDayOfYear(nic: string, format: NICFormat): number {
     const startIndex = format === 'old' ? 2 : 4;
-    let dayOfYear = parseInt(nic.substring(startIndex, startIndex + 3), 10);
-
-    let gender: Gender = 'male';
-
-    // If day > 500, it's a female (500 is added to actual day)
-    if (dayOfYear > 500) {
-        dayOfYear -= 500;
-        gender = 'female';
-    }
-
-    return { dayOfYear, gender };
+    return parseInt(nic.substring(startIndex, startIndex + 3), 10);
 }
 
-/**
- * Calculates age from birthday to current date
- * 
- * @param birthday - Birth date
- * @param currentDate - Current date (defaults to now)
- * @returns Age in years, months, and days
- */
-export function calculateAge(birthday: Date, currentDate: Date = new Date()): AgeInfo {
-    let years = currentDate.getFullYear() - birthday.getFullYear();
-    let months = currentDate.getMonth() - birthday.getMonth();
-    let days = currentDate.getDate() - birthday.getDate();
+// ============================================================================
+// Age Calculation Functions
+// ============================================================================
 
-    // Adjust for negative days
+/**
+ * Calculates precise age from birth date to current date
+ * 
+ * Handles edge cases including:
+ * - Month boundaries
+ * - Leap year February
+ * - Year boundaries
+ * 
+ * @param birthYear - Birth year
+ * @param birthMonth - Birth month (1-12)
+ * @param birthDay - Birth day (1-31)
+ * @param currentYear - Current year
+ * @param currentMonth - Current month (1-12)
+ * @param currentDay - Current day (1-31)
+ * @returns Age broken down into years, months, and days
+ */
+function calculatePreciseAge(
+    birthYear: number,
+    birthMonth: number,
+    birthDay: number,
+    currentYear: number,
+    currentMonth: number,
+    currentDay: number
+): AgeInfo {
+    let years = currentYear - birthYear;
+    let months = currentMonth - birthMonth;
+    let days = currentDay - birthDay;
+
+    // Adjust if days are negative (borrow from previous month)
     if (days < 0) {
         months--;
-        // Get days in previous month
-        const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-        days += prevMonth.getDate();
+
+        // Get days in the previous month
+        let prevMonth = currentMonth - 1;
+        let prevMonthYear = currentYear;
+
+        if (prevMonth === 0) {
+            prevMonth = 12;
+            prevMonthYear--;
+        }
+
+        // Use leap year aware days in month
+        const daysInPrevMonth = prevMonth === 2 && isLeapYear(prevMonthYear)
+            ? 29
+            : DAYS_IN_MONTH[prevMonth];
+
+        days += daysInPrevMonth;
     }
 
-    // Adjust for negative months
+    // Adjust if months are negative (borrow from previous year)
     if (months < 0) {
         years--;
         months += 12;
@@ -224,6 +348,32 @@ export function calculateAge(birthday: Date, currentDate: Date = new Date()): Ag
 
     return { years, months, days };
 }
+
+/**
+ * Calculates age from birthday to current date
+ * 
+ * @param birthday - Birth date as Date object
+ * @param currentDate - Current date (defaults to now)
+ * @returns Age in years, months, and days
+ * 
+ * @example
+ * const age = calculateAge(new Date(1994, 4, 3));
+ * // { years: 31, months: 8, days: 16 }
+ */
+export function calculateAge(birthday: Date, currentDate: Date = new Date()): AgeInfo {
+    return calculatePreciseAge(
+        birthday.getFullYear(),
+        birthday.getMonth() + 1,
+        birthday.getDate(),
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        currentDate.getDate()
+    );
+}
+
+// ============================================================================
+// Main Parsing Function
+// ============================================================================
 
 /**
  * Parses a valid NIC and extracts all information
@@ -237,8 +387,10 @@ export function calculateAge(birthday: Date, currentDate: Date = new Date()): Ag
  * // {
  * //   birthday: Date('1994-05-03'),
  * //   gender: 'male',
- * //   age: { years: 31, months: 8, days: 15 },
- * //   format: 'old'
+ * //   age: { years: 31, months: 8, days: 16 },
+ * //   format: 'old',
+ * //   year: 1994,
+ * //   dayOfYear: 123
  * // }
  */
 export function parseNIC(nic: string): NICInfo {
@@ -249,11 +401,33 @@ export function parseNIC(nic: string): NICInfo {
     }
 
     const format = validation.format;
-    const year = extractBirthYear(nic.trim(), format);
-    const { dayOfYear, gender } = extractDayOfYear(nic.trim(), format);
-    const { month, day } = getMonthAndDay(dayOfYear, year);
+    const trimmedNIC = nic.trim();
+    const year = extractBirthYear(trimmedNIC, format);
+    const rawDayOfYear = extractRawDayOfYear(trimmedNIC, format);
 
-    const birthday = new Date(year, month - 1, day); // Month is 0-indexed in JS
+    // Get gender from raw day
+    const gender = getGenderFromDay(rawDayOfYear, year);
+    if (gender === null) {
+        throw new Error('Invalid NIC: Unable to determine gender');
+    }
+
+    // Convert NIC day to actual date
+    const dateInfo = nicDayToDate(rawDayOfYear, year);
+    if (dateInfo === null) {
+        throw new Error('Invalid NIC: Unable to determine birth date');
+    }
+
+    const { month, day } = dateInfo;
+
+    // Calculate the normalized day of year (without gender offset)
+    const dayOfYear = rawDayOfYear > FEMALE_DAY_OFFSET
+        ? rawDayOfYear - FEMALE_DAY_OFFSET
+        : rawDayOfYear;
+
+    // Create birthday Date object (month is 0-indexed in JavaScript)
+    const birthday = new Date(year, month - 1, day);
+
+    // Calculate current age
     const age = calculateAge(birthday);
 
     return {
@@ -266,8 +440,19 @@ export function parseNIC(nic: string): NICInfo {
     };
 }
 
+// ============================================================================
+// Formatting Utilities
+// ============================================================================
+
 /**
  * Formats a date according to the specified locale
+ * 
+ * @param date - Date to format
+ * @param locale - Locale string (e.g., 'en', 'si', 'ta')
+ * @returns Localized date string
+ * 
+ * @example
+ * formatDate(new Date(1994, 4, 3), 'en') // "May 3, 1994"
  */
 export function formatDate(date: Date, locale: string): string {
     return new Intl.DateTimeFormat(locale, {
@@ -278,8 +463,11 @@ export function formatDate(date: Date, locale: string): string {
 }
 
 /**
- * Formats age with proper pluralization
- * Note: Actual pluralization should be handled by react-intl
+ * Extracts age components for formatting
+ * Note: Actual pluralization should be handled by the i18n library (e.g., react-intl)
+ * 
+ * @param age - Age info object
+ * @returns Age components for formatting
  */
 export function formatAge(age: AgeInfo): { years: number; months: number; days: number } {
     return {
