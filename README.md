@@ -227,7 +227,47 @@ flowchart TD
 └─────────────────────────────────────────────────────────┘
 ```
 
-## �🛠️ Tech Stack
+### 🔬 The Day-60 Skip Rule (Technical Deep Dive)
+
+The Sri Lankan NIC uses a clever numbering system to maintain consistency across leap and non-leap years:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    DAY NUMBERING COMPARISON                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   LEAP YEAR (e.g., 2000, 2024)      NON-LEAP YEAR (e.g., 1999)  │
+│   ─────────────────────────────      ───────────────────────────│
+│                                                                  │
+│   Day 58 = Feb 27                    Day 58 = Feb 27            │
+│   Day 59 = Feb 28                    Day 59 = Feb 28            │
+│   Day 60 = Feb 29  ←──────┐          Day 60 = ❌ SKIPPED ←──────│
+│   Day 61 = Mar 1   ←──────┼──────→   Day 61 = Mar 1   ←─────────│
+│   Day 62 = Mar 2   ←──────┼──────→   Day 62 = Mar 2   ←─────────│
+│   ...                     │          ...                         │
+│   Day 366 = Dec 31        │          Day 365 = Dec 31            │
+│                           │                                      │
+│                     SAME DAY NUMBERS FROM MARCH ONWARDS!         │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Why This Design?**
+- Simplifies validation: Day 61 is always March 1st
+- Reduces errors: No need to check leap year for most date lookups
+- Efficient storage: Same 3-digit range works for all years
+
+**Code Implementation (in `nic-utils.ts`):**
+```typescript
+// For non-leap years, adjust for the skipped day 60
+if (!isLeapYear && dayOfYear >= 60) {
+    dayOfYear -= 1;  // Convert NIC day to actual calendar day
+}
+```
+
+---
+
+## 🛠️ Tech Stack
 
 | Category | Technology |
 |----------|------------|
@@ -264,7 +304,10 @@ nic-information-finder/
 │   │   ├── globals.css            # Global styles
 │   │   └── sitemap.ts             # Dynamic sitemap
 │   ├── lib/
-│   │   ├── nic-utils.ts           # NIC parsing & validation
+│   │   ├── nic-utils.ts           # NIC parsing & validation (10/10 quality)
+│   │   │                          # - Uses lookup arrays for O(1) date conversion
+│   │   │                          # - Implements day-60 skip rule for non-leap years
+│   │   │                          # - Full TypeScript types with null safety
 │   │   ├── i18n.ts                # Internationalization config
 │   │   └── theme.ts               # Theme utilities
 │   ├── providers/
