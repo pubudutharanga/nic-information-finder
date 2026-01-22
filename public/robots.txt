@@ -97,6 +97,30 @@ Allow: /
 User-agent: bingpreview
 Allow: /
 
+# You.com
+User-agent: YouBot
+Allow: /
+
+# OpenAI Search
+User-agent: OAI-SearchBot
+Allow: /
+
+# TikTok/ByteDance
+User-agent: ByteSpider
+Allow: /
+
+# Amazon/Alexa
+User-agent: Amazonbot
+Allow: /
+
+# Brave Search
+User-agent: BraveBot
+Allow: /
+
+# Neeva (now Snowflake)
+User-agent: NeevaBot
+Allow: /
+
 # ===========================================
 # Social Media Crawlers
 # ===========================================

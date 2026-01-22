@@ -14,7 +14,7 @@ interface JsonLdProps {
 /**
  * JSON-LD Structured Data Component
  * 
- * Generates 10 schema types for maximum SEO impact:
+ * Generates 11 schema types for maximum SEO impact:
  * 1. WebApplication - Primary app schema
  * 2. Organization - Brand entity
  * 3. WebSite - Site-level with search action
@@ -25,6 +25,7 @@ interface JsonLdProps {
  * 8. LocalBusiness - Geo-targeting for Sri Lanka
  * 9. Service - NIC decoding service description
  * 10. Person - Developer/Author information
+ * 11. Article - History section content for educational rich snippets
  */
 export default function JsonLd({ locale }: JsonLdProps) {
     const msg = messages[locale] || messages.en;
@@ -61,7 +62,8 @@ export default function JsonLd({ locale }: JsonLdProps) {
         screenshot: `${baseUrl}/og-image.png`,
         softwareVersion: '2.0.0',
         datePublished: '2024-01-01',
-        dateModified: '2026-01-18',
+        dateModified: '2026-01-22',
+        keywords: msg.meta.keywords,
         author: {
             '@type': 'Person',
             name: 'Pubudu Tharanga',
@@ -356,6 +358,41 @@ export default function JsonLd({ locale }: JsonLdProps) {
         },
     };
 
+    // 11. Article Schema for History section
+    const articleSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        '@id': `${currentUrl}/#article`,
+        headline: msg.history?.title || 'History of Sri Lankan National Identity Card',
+        description: msg.history?.intro || 'Learn about the history and evolution of the Sri Lankan National Identity Card from 1972 to Smart NIC.',
+        image: `${baseUrl}/og-image.png`,
+        datePublished: '2024-01-01',
+        dateModified: '2026-01-22',
+        author: {
+            '@type': 'Person',
+            name: 'Pubudu Tharanga',
+            url: 'https://pubudu-tharanga.vercel.app',
+        },
+        publisher: {
+            '@id': `${baseUrl}/#organization`,
+        },
+        mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': currentUrl,
+        },
+        inLanguage: localeToHreflang[locale],
+        articleSection: 'History',
+        keywords: [
+            'Sri Lankan NIC history',
+            'National Identity Card Sri Lanka',
+            'NIC 1972',
+            'Smart NIC Sri Lanka',
+            '9-digit NIC format',
+            '12-digit NIC format',
+            'Department for Registration of Persons',
+        ],
+    };
+
     return (
         <>
             <script
@@ -397,6 +434,10 @@ export default function JsonLd({ locale }: JsonLdProps) {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
             />
         </>
     );

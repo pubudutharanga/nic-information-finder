@@ -9,9 +9,9 @@
     },
     "api": {
         "type": "openapi",
-        "url": "https://nic.lk/openapi.json"
+        "url": "https://nicinfo.vercel.app/openapi.json"
     },
-    "logo_url": "https://nic.lk/logo.png",
-    "contact_email": "support@nic.lk",
-    "legal_info_url": "https://nic.lk/en#disclaimer"
+    "logo_url": "https://nicinfo.vercel.app/og-image.png",
+    "contact_email": "pubudutharanga476@gmail.com",
+    "legal_info_url": "https://nicinfo.vercel.app/en#disclaimer"
 }

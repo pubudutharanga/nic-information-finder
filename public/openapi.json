@@ -1,0 +1,120 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Sri Lankan NIC Decoder API",
+        "description": "A client-side utility that decodes Sri Lankan National Identity Card (NIC) numbers to extract birthday, gender, and age. Note: This is a client-side only tool - all processing happens in the browser. This OpenAPI specification is provided for AI/LLM discoverability.",
+        "version": "2.0.0",
+        "contact": {
+            "name": "Pubudu Tharanga",
+            "url": "https://pubudu-tharanga.vercel.app",
+            "email": "pubudutharanga476@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://nicinfo.vercel.app",
+            "description": "Production server"
+        }
+    ],
+    "paths": {
+        "/en": {
+            "get": {
+                "summary": "NIC Decoder - English",
+                "description": "Access the NIC decoder interface in English. Enter your NIC number to decode birthday, gender, and age.",
+                "operationId": "getEnglishDecoder",
+                "responses": {
+                    "200": {
+                        "description": "HTML page with NIC decoder interface"
+                    }
+                }
+            }
+        },
+        "/si": {
+            "get": {
+                "summary": "NIC Decoder - Sinhala",
+                "description": "Access the NIC decoder interface in Sinhala (සිංහල). Enter your NIC number to decode birthday, gender, and age.",
+                "operationId": "getSinhalaDecoder",
+                "responses": {
+                    "200": {
+                        "description": "HTML page with NIC decoder interface in Sinhala"
+                    }
+                }
+            }
+        },
+        "/ta": {
+            "get": {
+                "summary": "NIC Decoder - Tamil",
+                "description": "Access the NIC decoder interface in Tamil (தமிழ்). Enter your NIC number to decode birthday, gender, and age.",
+                "operationId": "getTamilDecoder",
+                "responses": {
+                    "200": {
+                        "description": "HTML page with NIC decoder interface in Tamil"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "NICFormat": {
+                "type": "object",
+                "description": "Sri Lankan NIC number formats",
+                "properties": {
+                    "oldFormat": {
+                        "type": "string",
+                        "pattern": "^[0-9]{9}[VvXx]$",
+                        "description": "Old format: 9 digits followed by V or X (e.g., 941234567V)",
+                        "example": "941234567V"
+                    },
+                    "newFormat": {
+                        "type": "string",
+                        "pattern": "^[0-9]{12}$",
+                        "description": "New format: 12 digits (e.g., 199412345678)",
+                        "example": "199412345678"
+                    }
+                }
+            },
+            "DecodedInfo": {
+                "type": "object",
+                "description": "Information extracted from NIC number",
+                "properties": {
+                    "birthday": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Birth date extracted from NIC"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [
+                            "Male",
+                            "Female"
+                        ],
+                        "description": "Gender determined from day-of-year value"
+                    },
+                    "age": {
+                        "type": "object",
+                        "properties": {
+                            "years": {
+                                "type": "integer"
+                            },
+                            "months": {
+                                "type": "integer"
+                            },
+                            "days": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Learn more about Sri Lankan NIC format and history",
+        "url": "https://nicinfo.vercel.app/en#history"
+    }
+}
