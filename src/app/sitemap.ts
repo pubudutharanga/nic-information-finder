@@ -28,13 +28,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
     }));
 
-    // Root URL redirects to default locale
-    const rootEntry = {
-        url: baseUrl,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 1.0,
-    };
-
-    return [rootEntry, ...localeEntries];
+    return [...localeEntries];
 }

@@ -118,16 +118,9 @@ export default function JsonLd({ locale }: JsonLdProps) {
         sameAs: [
             'https://pubudu-tharanga.vercel.app',
         ],
-        aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '5',
-            ratingCount: '1500',
-            bestRating: '5',
-            worstRating: '1',
-        },
     };
 
-    // 3. WebSite Schema with SearchAction
+    // 3. WebSite Schema (without SearchAction — no site search exists)
     const webSiteSchema = {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
@@ -138,14 +131,6 @@ export default function JsonLd({ locale }: JsonLdProps) {
         inLanguage: ['en', 'si', 'ta'],
         publisher: {
             '@id': `${baseUrl}/#organization`,
-        },
-        potentialAction: {
-            '@type': 'SearchAction',
-            target: {
-                '@type': 'EntryPoint',
-                urlTemplate: `${baseUrl}/{search_term_string}`,
-            },
-            'query-input': 'required name=search_term_string',
         },
     };
 
@@ -229,73 +214,8 @@ export default function JsonLd({ locale }: JsonLdProps) {
         ],
     };
 
-    // 7. SoftwareApplication Schema
-    const softwareAppSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
-        '@id': `${baseUrl}/#software`,
-        name: 'Sri Lankan NIC Decoder',
-        applicationCategory: 'Utility',
-        applicationSubCategory: 'Personal Information Tool',
-        operatingSystem: 'Web Browser',
-        offers: {
-            '@type': 'Offer',
-            price: '0',
-            priceCurrency: 'LKR',
-        },
-        aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '5',
-            ratingCount: '1500',
-            bestRating: '5',
-            worstRating: '1',
-        },
-        author: {
-            '@type': 'Person',
-            name: 'Pubudu Tharanga',
-        },
-    };
-
-    // 8. LocalBusiness Schema for geo-targeting
-    const localBusinessSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'LocalBusiness',
-        '@id': `${baseUrl}/#localbusiness`,
-        name: 'Sri Lankan NIC Information Finder',
-        description: 'Free online NIC decoder service for Sri Lankan citizens',
-        url: baseUrl,
-        image: `${baseUrl}/og-image.png`,
-        telephone: '+94766330916',
-        address: {
-            '@type': 'PostalAddress',
-            streetAddress: 'No.341/1 A abaya niwasa, Dodampahala, Dikwella',
-            addressLocality: 'Matara',
-            addressRegion: 'Southern Province',
-            postalCode: '88100',
-            addressCountry: 'LK',
-        },
-        geo: {
-            '@type': 'GeoCoordinates',
-            latitude: 5.9701,
-            longitude: 80.7181,
-        },
-        areaServed: {
-            '@type': 'Country',
-            name: 'Sri Lanka',
-            sameAs: 'https://en.wikipedia.org/wiki/Sri_Lanka',
-        },
-        serviceArea: {
-            '@type': 'GeoCircle',
-            geoMidpoint: {
-                '@type': 'GeoCoordinates',
-                latitude: 7.8731,
-                longitude: 80.7718,
-            },
-            geoRadius: '500 km',
-        },
-        priceRange: 'Free',
-        openingHours: 'Mo-Su 00:00-24:00',
-    };
+    // Removed: SoftwareApplication (redundant with WebApplication, had fake ratings)
+    // Removed: LocalBusiness (web app, not a physical business)
 
     // 9. Service Schema
     const serviceSchema = {
@@ -418,14 +338,6 @@ export default function JsonLd({ locale }: JsonLdProps) {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
             />
             <script
                 type="application/ld+json"
