@@ -109,7 +109,7 @@ export async function generateMetadata({
 
         // TODO: Replace with actual Google Search Console verification code
         verification: {
-            google: 'your-google-verification-code',
+            google: '-V0RKnDbdKZRh-fAsPHmz3mZXuzZtEjYbXh0m-s5NOk',
         },
 
         // App-specific metadata
