@@ -182,18 +182,19 @@ export default async function LocaleLayout({
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
                 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
                 <link rel="manifest" href="/manifest.json" />
-
+                {/* Google Tag Manager - must be in <head> for Search Console verification */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                        })(window,document,'script','dataLayer','GTM-NQP2LQRX');`,
+                    }}
+                />
             </head>
             <body className={`${inter.variable} antialiased`}>
-                {/* Google Tag Manager - loaded after hydration for better Core Web Vitals */}
-                <Script id="google-tag-manager" strategy="afterInteractive">
-                    {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                    })(window,document,'script','dataLayer','GTM-NQP2LQRX');`}
-                </Script>
-                {/* Google Tag Manager (noscript) */}
+                {/* Google Tag Manager (noscript) - must be immediately after <body> */}
                 <noscript>
                     <iframe
                         src="https://www.googletagmanager.com/ns.html?id=GTM-NQP2LQRX"
