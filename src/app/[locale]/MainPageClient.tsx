@@ -41,10 +41,10 @@ export default function MainPageClient() {
             <header className="sticky top-0 z-50 backdrop-blur-md border-b border-[rgb(var(--color-border))] no-print">
                 <div className="container py-4 md:py-5 flex items-center justify-between">
                     <LiveClock />
-                    <div className="flex items-center gap-3">
+                    <nav aria-label="Site controls" className="flex items-center gap-3">
                         <ThemeToggle />
                         <LanguageSwitcher />
-                    </div>
+                    </nav>
                 </div>
             </header>
 
@@ -162,7 +162,9 @@ export default function MainPageClient() {
                         {intl.formatMessage({ id: 'footer.copyright' })}
                     </p>
                     <p className="text-sm" style={{ color: 'rgb(var(--color-text-secondary))' }}>
-                        {intl.formatMessage({ id: 'footer.developedBy' })}
+                        <a href="https://pubudu-tharanga.vercel.app" target="_blank" rel="noopener noreferrer">
+                            {intl.formatMessage({ id: 'footer.developedBy' })}
+                        </a>
                     </p>
 
                 </div>

@@ -57,9 +57,9 @@ export async function generateMetadata({
         alternates: {
             canonical: currentUrl,
             languages: {
-                'en': `${baseUrl}/en`,
-                'si': `${baseUrl}/si`,
-                'ta': `${baseUrl}/ta`,
+                'en-LK': `${baseUrl}/en`,
+                'si-LK': `${baseUrl}/si`,
+                'ta-LK': `${baseUrl}/ta`,
                 'x-default': `${baseUrl}/en`,
             },
         },

@@ -17,7 +17,7 @@ export default function HistorySection() {
     };
 
     return (
-        <section className="w-full max-w-4xl mx-auto mt-16 px-4">
+        <section className="w-full max-w-4xl mx-auto mt-16 px-4" aria-labelledby="history-heading">
             <motion.div
                 variants={containerVariants}
                 initial="hidden"
@@ -27,7 +27,7 @@ export default function HistorySection() {
             >
                 {/* Main Introduction */}
                 <motion.div variants={itemVariants} className="text-center space-y-4">
-                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))]">
+                    <h2 id="history-heading" className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))]">
                         {intl.formatMessage({ id: 'history.title' })}
                     </h2>
                     <p className="text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: 'rgb(var(--color-text-secondary))' }}>
@@ -46,7 +46,7 @@ export default function HistorySection() {
 
                         <div className="flex items-center gap-4 mb-6">
                             <div className="p-3 rounded-lg bg-[rgb(var(--color-primary))/10] text-[rgb(var(--color-primary))]">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
@@ -69,7 +69,7 @@ export default function HistorySection() {
 
                         <div className="flex items-center gap-4 mb-6">
                             <div className="p-3 rounded-lg bg-[rgb(var(--color-secondary))/10] text-[rgb(var(--color-secondary))]">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>

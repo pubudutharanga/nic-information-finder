@@ -73,17 +73,6 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Redirects for SEO
-  async redirects() {
-    return [
-      // Redirect root to default locale
-      {
-        source: '/',
-        destination: '/en',
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default nextConfig;

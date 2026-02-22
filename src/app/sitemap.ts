@@ -16,14 +16,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Generate entries for each locale
     const localeEntries = locales.map((locale) => ({
         url: `${baseUrl}/${locale}`,
-        lastModified: new Date(),
+        lastModified: new Date('2026-02-22'),
         changeFrequency: 'weekly' as const,
         priority: 1.0,
         alternates: {
             languages: {
-                en: `${baseUrl}/en`,
-                si: `${baseUrl}/si`,
-                ta: `${baseUrl}/ta`,
+                'en-LK': `${baseUrl}/en`,
+                'si-LK': `${baseUrl}/si`,
+                'ta-LK': `${baseUrl}/ta`,
+                'x-default': `${baseUrl}/en`,
             },
         },
     }));
