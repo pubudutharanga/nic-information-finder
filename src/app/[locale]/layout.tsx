@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Inter } from 'next/font/google';
 import '../globals.css';
 import { locales, localeToHreflang, localeToOG, type Locale } from '@/lib/i18n';
@@ -213,6 +214,7 @@ export default async function LocaleLayout({
                         {children}
                     </IntlProvider>
                 </ThemeProvider>
+                <GoogleAnalytics gaId="G-FLEV55JTJJ" />
             </body>
         </html>
     );
