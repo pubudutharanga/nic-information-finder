@@ -46,13 +46,15 @@ export function middleware(request: NextRequest) {
         ? cookieLocale
         : getPreferredLocale(request.headers.get('accept-language'));
 
-    // Redirect to locale-prefixed URL
+    // Rewrite (not redirect) to locale-prefixed URL
+    // Using rewrite returns a 200 status, preventing Google Search Console
+    // "Page with redirect" errors that block indexing
     const newUrl = new URL(
         `/${preferredLocale}${pathname === '/' ? '' : pathname}`,
         request.url
     );
 
-    const response = NextResponse.redirect(newUrl);
+    const response = NextResponse.rewrite(newUrl);
     response.cookies.set('NEXT_LOCALE', preferredLocale, {
         path: '/',
         maxAge: 60 * 60 * 24 * 365, // 1 year

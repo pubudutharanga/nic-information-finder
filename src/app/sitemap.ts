@@ -13,10 +13,26 @@ import { locales } from '@/lib/i18n';
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://nicinfo.vercel.app';
 
+    // Root URL entry — ensures Google indexes the main domain
+    const rootEntry = {
+        url: baseUrl,
+        lastModified: new Date('2026-02-28'),
+        changeFrequency: 'weekly' as const,
+        priority: 1.0,
+        alternates: {
+            languages: {
+                'en-LK': `${baseUrl}/en`,
+                'si-LK': `${baseUrl}/si`,
+                'ta-LK': `${baseUrl}/ta`,
+                'x-default': `${baseUrl}/en`,
+            },
+        },
+    };
+
     // Generate entries for each locale
     const localeEntries = locales.map((locale) => ({
         url: `${baseUrl}/${locale}`,
-        lastModified: new Date('2026-02-22'),
+        lastModified: new Date('2026-02-28'),
         changeFrequency: 'weekly' as const,
         priority: 1.0,
         alternates: {
@@ -29,5 +45,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
     }));
 
-    return [...localeEntries];
+    return [rootEntry, ...localeEntries];
 }
