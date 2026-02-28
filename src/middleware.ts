@@ -46,15 +46,15 @@ export function middleware(request: NextRequest) {
         ? cookieLocale
         : getPreferredLocale(request.headers.get('accept-language'));
 
-    // Rewrite (not redirect) to locale-prefixed URL
-    // Using rewrite returns a 200 status, preventing Google Search Console
-    // "Page with redirect" errors that block indexing
+    // 308 Permanent Redirect to locale-prefixed URL
+    // This tells Google the root URL is not a page — consolidating SEO
+    // signals to the canonical locale URLs (/en, /si, /ta)
     const newUrl = new URL(
         `/${preferredLocale}${pathname === '/' ? '' : pathname}`,
         request.url
     );
 
-    const response = NextResponse.rewrite(newUrl);
+    const response = NextResponse.redirect(newUrl, 308);
     response.cookies.set('NEXT_LOCALE', preferredLocale, {
         path: '/',
         maxAge: 60 * 60 * 24 * 365, // 1 year
