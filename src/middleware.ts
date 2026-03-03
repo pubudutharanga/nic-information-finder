@@ -54,7 +54,7 @@ export function middleware(request: NextRequest) {
         request.url
     );
 
-    const response = NextResponse.redirect(newUrl, 308);
+    const response = NextResponse.rewrite(newUrl);
     response.cookies.set('NEXT_LOCALE', preferredLocale, {
         path: '/',
         maxAge: 60 * 60 * 24 * 365, // 1 year
