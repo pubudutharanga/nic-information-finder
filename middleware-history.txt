@@ -1,0 +1,160 @@
+commit 39076fc2e44e567fcf02cae289c863d10bbb5648
+Author: Pubudu Tharanga <pubudutharange@gmail.com>
+Date:   Tue Mar 3 22:04:27 2026 +0530
+
+    feat: Implement i18n middleware using Next.js `NextResponse.rewrite` and add helper scripts to ensure correct rewrite usage.
+
+diff --git a/src/middleware.ts b/src/middleware.ts
+index 1fb3002..b770fde 100644
+--- a/src/middleware.ts
++++ b/src/middleware.ts
+@@ -54,7 +54,7 @@ export function middleware(request: NextRequest) {
+         request.url
+     );
+ 
+-    const response = NextResponse.redirect(newUrl, 308);
++    const response = NextResponse.rewrite(newUrl);
+     response.cookies.set('NEXT_LOCALE', preferredLocale, {
+         path: '/',
+         maxAge: 60 * 60 * 24 * 365, // 1 year
+
+commit 553c81c82f4b81ac03e4413bf58083649ddaea0a
+Author: Pubudu Tharanga <pubudutharange@gmail.com>
+Date:   Sat Feb 28 10:58:01 2026 +0530
+
+    feat: Add dynamic sitemap generation with locale variations and i18n middleware for locale detection and redirection.
+
+diff --git a/src/middleware.ts b/src/middleware.ts
+index 80fe13f..1fb3002 100644
+--- a/src/middleware.ts
++++ b/src/middleware.ts
+@@ -46,15 +46,15 @@ export function middleware(request: NextRequest) {
+         ? cookieLocale
+         : getPreferredLocale(request.headers.get('accept-language'));
+ 
+-    // Rewrite (not redirect) to locale-prefixed URL
+-    // Using rewrite returns a 200 status, preventing Google Search Console
+-    // "Page with redirect" errors that block indexing
++    // 308 Permanent Redirect to locale-prefixed URL
++    // This tells Google the root URL is not a page — consolidating SEO
++    // signals to the canonical locale URLs (/en, /si, /ta)
+     const newUrl = new URL(
+         `/${preferredLocale}${pathname === '/' ? '' : pathname}`,
+         request.url
+     );
+ 
+-    const response = NextResponse.rewrite(newUrl);
++    const response = NextResponse.redirect(newUrl, 308);
+     response.cookies.set('NEXT_LOCALE', preferredLocale, {
+         path: '/',
+         maxAge: 60 * 60 * 24 * 365, // 1 year
+
+commit b509fc7e8767af1fbe494995caa4afa71e3deb38
+Author: Pubudu Tharanga <pubudutharange@gmail.com>
+Date:   Sat Feb 28 07:49:25 2026 +0530
+
+    feat: add i18n middleware for locale detection and dynamic sitemap generation for SEO.
+
+diff --git a/src/middleware.ts b/src/middleware.ts
+index 58bc56b..80fe13f 100644
+--- a/src/middleware.ts
++++ b/src/middleware.ts
+@@ -46,13 +46,15 @@ export function middleware(request: NextRequest) {
+         ? cookieLocale
+         : getPreferredLocale(request.headers.get('accept-language'));
+ 
+-    // Redirect to locale-prefixed URL
++    // Rewrite (not redirect) to locale-prefixed URL
++    // Using rewrite returns a 200 status, preventing Google Search Console
++    // "Page with redirect" errors that block indexing
+     const newUrl = new URL(
+         `/${preferredLocale}${pathname === '/' ? '' : pathname}`,
+         request.url
+     );
+ 
+-    const response = NextResponse.redirect(newUrl);
++    const response = NextResponse.rewrite(newUrl);
+     response.cookies.set('NEXT_LOCALE', preferredLocale, {
+         path: '/',
+         maxAge: 60 * 60 * 24 * 365, // 1 year
+
+commit f1125886fd978f8540d2a81f8205270345275ed9
+Author: Pubudu Tharanga <pubudutharange@gmail.com>
+Date:   Sun Jan 18 23:02:16 2026 +0530
+
+    Prepare for Vercel deployment
+
+diff --git a/src/middleware.ts b/src/middleware.ts
+new file mode 100644
+index 0000000..58bc56b
+--- /dev/null
++++ b/src/middleware.ts
+@@ -0,0 +1,68 @@
++import { NextResponse } from 'next/server';
++import type { NextRequest } from 'next/server';
++import { locales, defaultLocale, getPreferredLocale, isValidLocale } from '@/lib/i18n';
++
++/**
++ * Middleware for handling internationalization (i18n)
++ * 
++ * This middleware:
++ * 1. Detects the user's preferred locale from cookies or Accept-Language header
++ * 2. Redirects to the appropriate locale-prefixed URL
++ * 3. Preserves locale preference in a cookie for future visits
++ * 
++ * Routes are structured as: /[locale]/... (e.g., /en, /si/about)
++ */
++export function middleware(request: NextRequest) {
++    const { pathname } = request.nextUrl;
++
++    // Skip middleware for static files and API routes
++    if (
++        pathname.startsWith('/_next') ||
++        pathname.startsWith('/api') ||
++        pathname.includes('.') ||
++        pathname.startsWith('/favicon')
++    ) {
++        return NextResponse.next();
++    }
++
++    // Check if pathname already has a valid locale
++    const pathnameLocale = pathname.split('/')[1];
++    const hasLocale = locales.some(locale => locale === pathnameLocale);
++
++    if (hasLocale) {
++        // Set locale cookie for preference persistence
++        const response = NextResponse.next();
++        response.cookies.set('NEXT_LOCALE', pathnameLocale, {
++            path: '/',
++            maxAge: 60 * 60 * 24 * 365, // 1 year
++            sameSite: 'lax',
++        });
++        return response;
++    }
++
++    // Get preferred locale from cookie or Accept-Language header
++    const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
++    const preferredLocale = cookieLocale && isValidLocale(cookieLocale)
++        ? cookieLocale
++        : getPreferredLocale(request.headers.get('accept-language'));
++
++    // Redirect to locale-prefixed URL
++    const newUrl = new URL(
++        `/${preferredLocale}${pathname === '/' ? '' : pathname}`,
++        request.url
++    );
++
++    const response = NextResponse.redirect(newUrl);
++    response.cookies.set('NEXT_LOCALE', preferredLocale, {
++        path: '/',
++        maxAge: 60 * 60 * 24 * 365, // 1 year
++        sameSite: 'lax',
++    });
++
++    return response;
++}
++
++export const config = {
++    // Match all paths except static files
++    matcher: ['/((?!_next|api|favicon.ico|robots.txt|sitemap.xml|.*\\.).*)'],
++};

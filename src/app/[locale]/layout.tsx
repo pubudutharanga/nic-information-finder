@@ -61,7 +61,7 @@ export async function generateMetadata({
                 'en-LK': `${baseUrl}/en`,
                 'si-LK': `${baseUrl}/si`,
                 'ta-LK': `${baseUrl}/ta`,
-                'x-default': `${baseUrl}/en`,
+                'x-default': `${baseUrl}/`,
             },
         },
 
