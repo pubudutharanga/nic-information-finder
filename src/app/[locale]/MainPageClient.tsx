@@ -11,7 +11,7 @@ import InlineCalendar from './components/InlineCalendar';
 import LiveClock from './components/LiveClock';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import ThemeToggle from './components/ThemeToggle';
-import AdPlaceholder from './components/AdPlaceholder';
+
 import SocialShare from './components/SocialShare';
 import HistorySection from './components/HistorySection';
 import FAQSection from './components/FAQSection';
@@ -76,7 +76,7 @@ export default function MainPageClient() {
                     </div>
                 </motion.section>
 
-                <AdPlaceholder size="728x90" position="header-banner" />
+
 
                 {/* NIC Decoder Section - Primary Tool */}
                 <motion.section
@@ -103,7 +103,7 @@ export default function MainPageClient() {
                     )}
                 </motion.section>
 
-                <AdPlaceholder size="300x250" position="in-content-rectangle" />
+
 
                 {/* Below-fold content with performance optimization */}
                 <div className="below-fold space-y-16">
@@ -170,7 +170,7 @@ export default function MainPageClient() {
                 </div>
             </footer>
 
-            <AdPlaceholder size="320x50" position="mobile-sticky-bottom" />
+
         </div>
     );
 }
