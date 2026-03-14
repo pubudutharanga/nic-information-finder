@@ -176,6 +176,7 @@ export default async function LocaleLayout({
                 {/* Preconnect to external domains for performance */}
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
 
                 {/* Favicon and app icons - comprehensive for all browsers */}
                 <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -215,6 +216,13 @@ export default async function LocaleLayout({
                     </IntlProvider>
                 </ThemeProvider>
                 <GoogleAnalytics gaId="G-FLEV55JTJJ" />
+                {/* Google AdSense */}
+                <Script
+                    async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6232824086351716"
+                    crossOrigin="anonymous"
+                    strategy="afterInteractive"
+                />
             </body>
         </html>
     );

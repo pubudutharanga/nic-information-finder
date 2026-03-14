@@ -46,7 +46,7 @@ const nextConfig: NextConfig = {
           // 2026 SEO: Preconnect hints for performance
           {
             key: 'Link',
-            value: '<https://fonts.googleapis.com>; rel=preconnect, <https://fonts.gstatic.com>; rel=preconnect; crossorigin, <https://www.googletagmanager.com>; rel=dns-prefetch',
+            value: '<https://fonts.googleapis.com>; rel=preconnect, <https://fonts.gstatic.com>; rel=preconnect; crossorigin, <https://www.googletagmanager.com>; rel=dns-prefetch, <https://pagead2.googlesyndication.com>; rel=dns-prefetch',
           },
         ],
       },
