@@ -16,6 +16,8 @@ import SocialShare from './components/SocialShare';
 import HistorySection from './components/HistorySection';
 import FAQSection from './components/FAQSection';
 import EducationalSection from './components/EducationalSection';
+import AdsterraAd from './components/AdsterraAd';
+import AdsterraNativeBanner from './components/AdsterraNativeBanner';
 
 export default function MainPageClient() {
     const intl = useIntl();
@@ -76,7 +78,10 @@ export default function MainPageClient() {
                     </div>
                 </motion.section>
 
-
+                {/* Adsterra Native Banner - After Hero */}
+                <div className="max-w-3xl mx-auto no-print">
+                    <AdsterraNativeBanner />
+                </div>
 
                 {/* NIC Decoder Section - Primary Tool */}
                 <motion.section
@@ -103,15 +108,42 @@ export default function MainPageClient() {
                     )}
                 </motion.section>
 
-
+                {/* Adsterra Leaderboard - After Decoder */}
+                <div className="flex justify-center no-print">
+                    {/* Desktop: 728x90 */}
+                    <div className="hidden md:block">
+                        <AdsterraAd adKey="1d991944a38fcba3be08497212b58c82" width={728} height={90} />
+                    </div>
+                    {/* Mobile: 320x50 */}
+                    <div className="block md:hidden">
+                        <AdsterraAd adKey="26a1ef2b6e466470c96200365f14deff" width={320} height={50} />
+                    </div>
+                </div>
 
                 {/* Below-fold content with performance optimization */}
                 <div className="below-fold space-y-16">
                     <EducationalSection />
 
+                    {/* Adsterra 300x250 - Between Educational & History */}
+                    <div className="flex justify-center no-print">
+                        <AdsterraAd adKey="89bf45c2a0844f31cb3eaf8d4601ca48" width={300} height={250} />
+                    </div>
+
                     <HistorySection />
 
                     <FAQSection />
+
+                    {/* Adsterra Leaderboard - After FAQ */}
+                    <div className="flex justify-center no-print">
+                        {/* Desktop: 728x90 */}
+                        <div className="hidden md:block">
+                            <AdsterraAd adKey="1d991944a38fcba3be08497212b58c82" width={728} height={90} />
+                        </div>
+                        {/* Mobile: 320x50 */}
+                        <div className="block md:hidden">
+                            <AdsterraAd adKey="26a1ef2b6e466470c96200365f14deff" width={320} height={50} />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Privacy Section */}
