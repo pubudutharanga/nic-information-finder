@@ -229,6 +229,12 @@ export default async function LocaleLayout({
                     src="https://pl29054902.profitablecpmratenetwork.com/12/fd/92/12fd92f5eaf18ebed8a2692937807133.js"
                     strategy="afterInteractive"
                 />
+                {/* Adsterra Social Bar */}
+                <Script
+                    id="adsterra-social-bar"
+                    src="https://pl29051271.profitablecpmratenetwork.com/b0/d8/69/b0d86922a34d96a9992e00a5904f2079.js"
+                    strategy="afterInteractive"
+                />
             </body>
         </html>
     );
