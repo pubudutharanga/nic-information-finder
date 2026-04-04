@@ -223,9 +223,10 @@ export default async function LocaleLayout({
                     crossOrigin="anonymous"
                     strategy="afterInteractive"
                 />
-                {/* Adsterra Popunder */}
+                {/* Adsterra Popunder – one per page load */}
                 <Script
-                    src="https://pl29051271.profitablecpmratenetwork.com/b0/d8/69/b0d86922a34d96a9992e00a5904f2079.js"
+                    id="adsterra-popunder"
+                    src="https://pl29054902.profitablecpmratenetwork.com/12/fd/92/12fd92f5eaf18ebed8a2692937807133.js"
                     strategy="afterInteractive"
                 />
             </body>
