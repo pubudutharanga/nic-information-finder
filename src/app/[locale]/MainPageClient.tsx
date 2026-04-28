@@ -199,6 +199,52 @@ export default function MainPageClient() {
                         </a>
                     </p>
 
+                    {/* Cross-promotion: Sri Lanka Train Timetable */}
+                    <div className="mt-5 pt-5" style={{ borderTop: '1px solid rgb(var(--color-border))' }}>
+                        <p className="text-xs mb-2" style={{ color: 'rgb(var(--color-text-secondary))', letterSpacing: '0.05em', textTransform: 'uppercase', fontWeight: 600 }}>
+                            🔗 Also Try
+                        </p>
+                        <a
+                            href="https://sri-lanka-train-timetable.vercel.app/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                padding: '8px 18px',
+                                borderRadius: '999px',
+                                background: 'linear-gradient(135deg, rgb(var(--color-primary) / 0.15), rgb(var(--color-accent) / 0.15))',
+                                border: '1px solid rgb(var(--color-primary) / 0.3)',
+                                color: 'rgb(var(--color-primary))',
+                                fontSize: '0.875rem',
+                                fontWeight: 600,
+                                textDecoration: 'none',
+                                transition: 'all 0.2s ease',
+                            }}
+                            onMouseEnter={e => {
+                                (e.currentTarget as HTMLAnchorElement).style.background = 'linear-gradient(135deg, rgb(var(--color-primary) / 0.25), rgb(var(--color-accent) / 0.25))';
+                                (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-1px)';
+                                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 12px rgb(var(--color-primary) / 0.2)';
+                            }}
+                            onMouseLeave={e => {
+                                (e.currentTarget as HTMLAnchorElement).style.background = 'linear-gradient(135deg, rgb(var(--color-primary) / 0.15), rgb(var(--color-accent) / 0.15))';
+                                (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)';
+                                (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none';
+                            }}
+                            aria-label="Visit Sri Lanka Train Timetable website"
+                        >
+                            <span aria-hidden="true">🚂</span>
+                            Sri Lanka Train Timetable
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                        </a>
+                        <p className="text-xs mt-2" style={{ color: 'rgb(var(--color-text-secondary))' }}>
+                            Check Sri Lanka train schedules &amp; timings instantly
+                        </p>
+                    </div>
+
                 </div>
             </footer>
 
