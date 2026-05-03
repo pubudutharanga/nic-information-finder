@@ -17,7 +17,6 @@ import HistorySection from './components/HistorySection';
 import FAQSection from './components/FAQSection';
 import EducationalSection from './components/EducationalSection';
 import AdsterraAd from './components/AdsterraAd';
-import AdsterraNativeBanner from './components/AdsterraNativeBanner';
 
 export default function MainPageClient() {
     const intl = useIntl();
@@ -77,11 +76,6 @@ export default function MainPageClient() {
                         {intl.formatMessage({ id: 'header.tagline' })}
                     </div>
                 </motion.section>
-
-                {/* Adsterra Native Banner - After Hero */}
-                <div className="max-w-3xl mx-auto no-print">
-                    <AdsterraNativeBanner />
-                </div>
 
                 {/* NIC Decoder Section - Primary Tool */}
                 <motion.section
