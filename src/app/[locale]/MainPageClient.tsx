@@ -17,6 +17,7 @@ import HistorySection from './components/HistorySection';
 import FAQSection from './components/FAQSection';
 import EducationalSection from './components/EducationalSection';
 import AdsterraAd from './components/AdsterraAd';
+import { AuroraText } from '@/components/magicui/aurora-text';
 
 export default function MainPageClient() {
     const intl = useIntl();
@@ -58,8 +59,8 @@ export default function MainPageClient() {
                     className="text-center max-w-3xl mx-auto"
                     aria-labelledby="hero-title"
                 >
-                    <h1 id="hero-title" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gradient">
-                        {intl.formatMessage({ id: 'header.title' })}
+                    <h1 id="hero-title" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
+                        <AuroraText>{intl.formatMessage({ id: 'header.title' })}</AuroraText>
                     </h1>
                     <p className="text-lg md:text-xl mb-2" style={{ color: 'rgb(var(--color-text-secondary))' }}>
                         {intl.formatMessage({ id: 'header.subtitle' })}

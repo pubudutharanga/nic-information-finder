@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { motion, AnimatePresence } from 'framer-motion';
+import { NumberTicker } from '@/components/magicui/number-ticker';
+import { ShineBorder } from '@/components/magicui/shine-border';
 import type { NICInfo } from '@/lib/nic-utils';
 
 interface ResultsDisplayProps {
@@ -16,11 +18,13 @@ export default function ResultsDisplay({ nicInfo, onBirthdayClick }: ResultsDisp
 
     if (!nicInfo) return null;
 
-    const formattedBirthday = new Intl.DateTimeFormat(intl.locale, {
+    const birthdayFormatter = new Intl.DateTimeFormat(intl.locale, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-    }).format(nicInfo.birthday);
+    });
+    const formattedBirthday = birthdayFormatter.format(nicInfo.birthday);
+    const birthdayParts = birthdayFormatter.formatToParts(nicInfo.birthday);
 
     const formatAgeUnit = (value: number, singular: string, plural: string) => {
         return `${value} ${value === 1 ? intl.formatMessage({ id: singular }) : intl.formatMessage({ id: plural })}`;
@@ -31,6 +35,25 @@ export default function ResultsDisplay({ nicInfo, onBirthdayClick }: ResultsDisp
         formatAgeUnit(nicInfo.age.months, 'age.month', 'age.months'),
         formatAgeUnit(nicInfo.age.days, 'age.day', 'age.days'),
     ].join(', ');
+
+    const formatAgeUnitWithTicker = (value: number, singular: string, plural: string) => {
+        return (
+            <span className="inline-flex items-center gap-1">
+                <NumberTicker value={value} useGrouping={false} />
+                <span>{value === 1 ? intl.formatMessage({ id: singular }) : intl.formatMessage({ id: plural })}</span>
+            </span>
+        );
+    };
+
+    const AgeStringRendered = (
+        <span className="inline-flex flex-wrap gap-1 items-center">
+            {formatAgeUnitWithTicker(nicInfo.age.years, 'age.year', 'age.years')}
+            <span>, </span>
+            {formatAgeUnitWithTicker(nicInfo.age.months, 'age.month', 'age.months')}
+            <span>, </span>
+            {formatAgeUnitWithTicker(nicInfo.age.days, 'age.day', 'age.days')}
+        </span>
+    );
 
     const genderIcon = nicInfo.gender === 'male' ? '♂' : '♀';
     const genderLabel = intl.formatMessage({ id: `gender.${nicInfo.gender}` });
@@ -71,14 +94,23 @@ export default function ResultsDisplay({ nicInfo, onBirthdayClick }: ResultsDisp
 
                 <div className="grid gap-4">
                     {/* Birthday */}
-                    <motion.div variants={itemVariants} className="glass-card p-5 relative group cursor-pointer transition-colors active:scale-[0.99]" onClick={(e) => handleCopy(formattedBirthday, e)}>
+                    <motion.div variants={itemVariants} className="glass-card overflow-hidden p-5 relative group cursor-pointer transition-colors active:scale-[0.99]" onClick={(e) => handleCopy(formattedBirthday, e)}>
+                        <ShineBorder shineColor={["rgb(var(--color-primary))", "rgb(var(--color-accent))"]} borderWidth={1} />
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-medium mb-1" style={{ color: 'rgb(var(--color-text-secondary))' }}>
                                     {intl.formatMessage({ id: 'result.birthday' })}
                                 </p>
-                                <p className="text-xl font-bold" style={{ color: 'rgb(var(--color-text))' }}>
-                                    {formattedBirthday}
+                                <p className="text-xl font-bold flex flex-wrap items-center" style={{ color: 'rgb(var(--color-text))' }}>
+                                    {birthdayParts.map((part, i) => {
+                                        if (part.type === 'year' || part.type === 'day') {
+                                            const parsed = parseInt(part.value, 10);
+                                            if (!isNaN(parsed)) {
+                                                return <NumberTicker key={i} value={parsed} useGrouping={false} />;
+                                            }
+                                        }
+                                        return <span key={i} className="whitespace-pre">{part.value}</span>;
+                                    })}
                                 </p>
                             </div>
                             <button
@@ -99,7 +131,8 @@ export default function ResultsDisplay({ nicInfo, onBirthdayClick }: ResultsDisp
                     </motion.div>
 
                     {/* Gender */}
-                    <motion.div variants={itemVariants} className="glass-card p-5 relative group cursor-pointer transition-colors active:scale-[0.99]" onClick={(e) => handleCopy(genderLabel, e)}>
+                    <motion.div variants={itemVariants} className="glass-card overflow-hidden p-5 relative group cursor-pointer transition-colors active:scale-[0.99]" onClick={(e) => handleCopy(genderLabel, e)}>
+                        <ShineBorder shineColor={["rgb(var(--color-info))", "rgb(var(--color-primary))"]} borderWidth={1} />
                         <div className="flex items-center gap-4">
                             <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bold" style={{ background: `${genderColor}20`, color: genderColor }}>
                                 {genderIcon}
@@ -115,7 +148,8 @@ export default function ResultsDisplay({ nicInfo, onBirthdayClick }: ResultsDisp
                     </motion.div>
 
                     {/* Age */}
-                    <motion.div variants={itemVariants} className="glass-card p-5 relative group cursor-pointer transition-colors active:scale-[0.99]" onClick={(e) => handleCopy(ageString, e)}>
+                    <motion.div variants={itemVariants} className="glass-card overflow-hidden p-5 relative group cursor-pointer transition-colors active:scale-[0.99]" onClick={(e) => handleCopy(ageString, e)}>
+                        <ShineBorder shineColor={["rgb(var(--color-accent))", "rgb(var(--color-primary))"]} borderWidth={1} />
                         <div className="flex items-center gap-4">
                             <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl" style={{ background: 'rgb(var(--color-accent) / 0.15)', color: 'rgb(var(--color-accent))' }}>
                                 🎂
@@ -124,7 +158,7 @@ export default function ResultsDisplay({ nicInfo, onBirthdayClick }: ResultsDisp
                                 <p className="text-sm font-medium mb-1" style={{ color: 'rgb(var(--color-text-secondary))' }}>
                                     {intl.formatMessage({ id: 'result.age' })}
                                 </p>
-                                <p className="text-xl font-bold" style={{ color: 'rgb(var(--color-text))' }}>{ageString}</p>
+                                <div className="text-xl font-bold" style={{ color: 'rgb(var(--color-text))' }}>{AgeStringRendered}</div>
                             </div>
                         </div>
                         <div className="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-[rgb(var(--color-accent))] opacity-10 transition-all pointer-events-none"></div>

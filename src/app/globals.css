@@ -156,6 +156,7 @@ a {
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-md);
     transition: all var(--transition-base);
+    position: relative; /* Added for ShineBorder absolute positioning */
 }
 
 .glass-card:hover {
@@ -338,4 +339,18 @@ a {
 ::selection {
     background: rgb(var(--color-primary) / 0.3);
     color: rgb(var(--color-text));
+}
+
+/* Aurora Text Animation */
+@keyframes aurora {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+.animate-aurora {
+    animation: aurora linear infinite;
+}
+
+.bg-size-\[200\%_auto\] {
+    background-size: 200% auto;
 }

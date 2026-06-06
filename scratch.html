@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  background: #333;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.shine {
+  pointer-events: none;
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  width: 100%; height: 100%;
+  padding: 2px;
+  background-image: radial-gradient(transparent, transparent, red, yellow, transparent, transparent);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: shine 2s infinite linear;
+  box-sizing: border-box;
+}
+@keyframes shine {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="shine"></div>
+  Inner Content
+</div>
+</body>
+</html>
